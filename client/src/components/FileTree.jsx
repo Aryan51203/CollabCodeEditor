@@ -45,6 +45,10 @@ function FileList({ tree, setDefault }) {
   return (
     <>
       {Object.keys(tree).map((name) => {
+        if (name === "input") {
+          return tree[name];
+        }
+
         return (
           <button key={name} onClick={() => setDefault({ name: name, text: tree[name] })}>
             {name}

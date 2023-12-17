@@ -6,15 +6,45 @@ function FileSpace({ setDefault }) {
   const [tree, setTree] = useState({});
   const [currDir, setCurrDir] = useState("");
 
-  async function handleCreateNewFile() {
-    const newFileHandle = await currDir.getFileHandle("MyNotes.txt", { create: true });
-    const file = await newFileHandle.getFile();
-
+  function handleCreateNewFile() {
     setTree((tree) => {
       const newTree = { ...tree };
-      newTree[file.name] = "";
+      const inpEle = (
+        <input
+          type="text"
+          id="inpFileName"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              createNewFile(e.target.value);
+              setTree((tree) => {
+                const newTree = { ...tree };
+                delete newTree["input"];
+                return newTree;
+              });
+            } else if (e.key === "Escape") {
+              setTree((tree) => {
+                const newTree = { ...tree };
+                delete newTree["input"];
+                return newTree;
+              });
+            }
+          }}
+        />
+      );
+      newTree["input"] = inpEle;
       return newTree;
     });
+
+    async function createNewFile(name) {
+      const newFileHandle = await currDir.getFileHandle(name, { create: true });
+      const file = await newFileHandle.getFile();
+
+      setTree((tree) => {
+        const newTree = { ...tree };
+        newTree[file.name] = "";
+        return newTree;
+      });
+    }
   }
 
   async function handleCreateNewFolder() {}
