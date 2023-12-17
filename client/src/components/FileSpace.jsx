@@ -2,9 +2,8 @@ import FileButtons from "./FileButtons";
 import FileTree from "./FileTree";
 import { useState } from "react";
 
-function FileSpace({ setDefault }) {
+function FileSpace({ setDefault, currDir, setCurrDir }) {
   const [tree, setTree] = useState({});
-  const [currDir, setCurrDir] = useState("");
 
   function handleCreateNewFile() {
     setTree((tree) => {

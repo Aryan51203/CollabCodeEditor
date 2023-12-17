@@ -1,8 +1,4 @@
-import { useState } from "react";
-
 function FileTree({ setDefault, setCurrDir, tree, setTree }) {
-  const [fileList, setFileList] = useState([]);
-
   //ONLY OPENS FILES AND NOT FOLDERS
   async function openFolder() {
     const dirHandle = await window.showDirectoryPicker();
@@ -22,18 +18,11 @@ function FileTree({ setDefault, setCurrDir, tree, setTree }) {
         return newTree;
       });
     }
-    setFileList(Object.keys(tree));
-  }
-
-  function giveResult() {
-    console.log(tree);
-    console.log(Object.keys(tree));
   }
 
   return (
     <div>
       <button onClick={openFolder}>OPEN</button>
-      <button onClick={giveResult}>RESULT</button>
       <div>
         <FileList tree={tree} setDefault={setDefault} />
       </div>

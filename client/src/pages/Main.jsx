@@ -1,10 +1,37 @@
 import Editor from "@monaco-editor/react";
-import FileSpace from "./../components/File";
+import FileSpace from "../components/FileSpace";
 import { useState, useRef } from "react";
 
 function Main() {
   const [defaultMonaco, setDefault] = useState({});
   const editorRef = useRef(null);
+  const [currDir, setCurrDir] = useState("");
+
+  // useEffect(() => {
+  //   const handleKeyDown = (event) => {
+  //     event.preventDefault();
+  //     const code = event.which || event.keyCode;
+  //     let charCode = String.fromCharCode(code).toLowerCase();
+  //     if ((event.ctrlKey || event.metaKey) && charCode === "s") {
+  //       handleSaveCurrentFile();
+  //     }
+  //   };
+
+  //   document.getElementById("editorMonaco").addEventListener("keydown", handleKeyDown);
+
+  //   return () => document.getElementById("editorMonaco").removeEventListener("keydown", handleKeyDown);
+  // }, []);
+
+  async function handleSaveCurrentFile() {
+    const fileHandle = await currDir.getFileHandle(defaultMonaco.name, { create: false });
+    const writable = await fileHandle.createWritable();
+
+    const contents = getEditorValue();
+    console.log(contents);
+    await writable.write(contents);
+    await writable.close();
+    alert("SAVEDD");
+  }
 
   function getFileType(name) {
     if (name == null) {
@@ -27,23 +54,23 @@ function Main() {
   }
 
   function getEditorValue() {
-    console.log(editorRef.current.getValue());
+    return editorRef.current.getValue();
   }
 
   return (
     <div id="App">
       <div id="sidebarLeft">
         <div id="FileSpace">
-          <FileSpace setDefault={setDefault} />
+          <FileSpace setDefault={setDefault} currDir={currDir} setCurrDir={setCurrDir} />
         </div>
 
         <div id="ActiveMembers">
           <button
             onClick={() => {
-              getEditorValue();
+              handleSaveCurrentFile();
             }}
           >
-            CLICK
+            SAVE
           </button>
           ACTIVE MEMBERS Coming Soon
         </div>
