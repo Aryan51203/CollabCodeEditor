@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-function FileTree({ setDefault, setCurrDir }) {
-  const [tree, setTree] = useState({});
+function FileTree({ setDefault, setCurrDir, tree, setTree }) {
   const [fileList, setFileList] = useState([]);
 
   //ONLY OPENS FILES AND NOT FOLDERS
@@ -18,12 +17,12 @@ function FileTree({ setDefault, setCurrDir }) {
       const fileContent = await file.text();
 
       setTree((tree) => {
-        tree[file.name] = fileContent.trim();
-        return tree;
+        const newTree = { ...tree };
+        newTree[file.name] = fileContent.trim();
+        return newTree;
       });
     }
     setFileList(Object.keys(tree));
-    setTree(tree);
   }
 
   function giveResult() {

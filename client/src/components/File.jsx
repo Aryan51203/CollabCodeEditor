@@ -3,10 +3,18 @@ import FileTree from "./FileTree";
 import { useState } from "react";
 
 function FileSpace({ setDefault }) {
+  const [tree, setTree] = useState({});
   const [currDir, setCurrDir] = useState("");
 
   async function handleCreateNewFile() {
-    const newFileHandle = await currDir.getFileHandle("My Notes.txt", { create: true });
+    const newFileHandle = await currDir.getFileHandle("MyNotes.txt", { create: true });
+    const file = await newFileHandle.getFile();
+
+    setTree((tree) => {
+      const newTree = { ...tree };
+      newTree[file.name] = "";
+      return newTree;
+    });
   }
 
   async function handleCreateNewFolder() {}
@@ -15,7 +23,7 @@ function FileSpace({ setDefault }) {
     <>
       <FileHeader />
       <FileButtons handleCreateNewFile={handleCreateNewFile} handleCreateNewFolder={handleCreateNewFolder} />
-      <FileTree setDefault={setDefault} setCurrDir={setCurrDir} />
+      <FileTree setDefault={setDefault} setCurrDir={setCurrDir} tree={tree} setTree={setTree} />
     </>
   );
 }

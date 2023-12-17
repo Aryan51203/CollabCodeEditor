@@ -15,6 +15,8 @@ function Main() {
 
     if (extType === "js") {
       return "javascript";
+    } else if (extType === "txt") {
+      return "text";
     } else {
       return extType;
     }
