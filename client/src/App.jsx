@@ -1,10 +1,12 @@
 import "./App.css";
 import Main from "./pages/Main";
+import Sock from "./pages/Socket";
 
 function App() {
   return (
     <>
-      <Main />
+      {/* <Main /> */}
+      <Sock />
     </>
   );
 }
